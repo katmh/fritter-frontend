@@ -32,6 +32,7 @@
         "@types/express": "^4.17.14",
         "@types/express-session": "1.17.0",
         "@types/morgan": "^1.9.3",
+        "@types/node": "^18.11.1",
         "@types/uuid": "^8.3.4",
         "@vue/cli-plugin-router": "^5.0.8",
         "@vue/cli-service": "^5.0.8",
@@ -54,7 +55,9 @@
                 "files": [
                     "**/*.ts"
                 ],
-                "excludedFiles": ["client/**"],
+                "excludedFiles": [
+                    "client/**"
+                ],
                 "extends": [
                     "xo",
                     "xo-typescript/space",

@@ -8,5 +8,8 @@
     "rootDir": "./",
     "baseUrl": "./",
     "module": "commonjs"
+  },
+  "vueCompilerOptions": {
+    "target": 2.7
   }
 }
