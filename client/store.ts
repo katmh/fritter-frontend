@@ -5,7 +5,7 @@ import createPersistedState from 'vuex-persistedstate';
 Vue.use(Vuex);
 
 /**
- * Storage for data that needs to be accessed from various compoentns.
+ * Storage for data that needs to be accessed from various components.
  */
 const store = new Vuex.Store({
   state: {

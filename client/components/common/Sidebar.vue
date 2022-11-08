@@ -36,6 +36,7 @@
       </router-link>
     </nav>
     <p>@{{ $store.state.username }}</p>
+    <LogoutForm />
     <section class="alerts">
       <article
         v-for="(status, alert, index) in $store.state.alerts"
@@ -47,6 +48,17 @@
     </section>
   </aside>
 </template>
+
+<script>
+import LogoutForm from '@/components/Account/LogoutForm.vue';
+
+export default {
+  name: 'Sidebar',
+  components: {
+    LogoutForm
+  }
+};
+</script>
 
 <style scoped>
 aside {
