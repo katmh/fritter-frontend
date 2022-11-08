@@ -15,7 +15,8 @@ export default {
         {id: 'content', label: 'Content', value: ''}
       ],
       title: 'Create a freet',
-      refreshFreets: true,
+      // refreshFreets: true,
+      refreshFreets: false,
       callback: () => {
         const message = 'Successfully created a freet!';
         this.$set(this.alerts, message, 'success');

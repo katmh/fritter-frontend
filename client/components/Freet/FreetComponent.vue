@@ -100,7 +100,6 @@ export default {
       /**
        * Follow author of freet.
        */
-      console.log('this.freet', this.freet);
       const params = {
         endpoint: `api/follows/${this.freet.authorId}`,
         method: 'POST',
