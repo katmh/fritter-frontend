@@ -3,9 +3,7 @@
 <template>
   <main>
     <section v-if="$store.state.username">
-      <header>
-        <h2>Welcome @{{ $store.state.username }}</h2>
-      </header>
+      <h2>Home</h2>
       <CreateFreetForm />
       <CreateCMForm />
     </section>
@@ -26,9 +24,11 @@
       <header>
         <div class="left">
           <h2>
-            Viewing all freets
             <span v-if="$store.state.filter">
-              by @{{ $store.state.filter }}
+              Viewing freets by @{{ $store.state.filter }}
+            </span>
+            <span v-else>
+              Home
             </span>
           </h2>
         </div>

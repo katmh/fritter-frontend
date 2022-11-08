@@ -1,6 +1,3 @@
-<!-- Reusable component representing a single freet and its actions -->
-<!-- We've tagged some elements with classes; consider writing CSS using those classes to style them... -->
-
 <template>
   <article
     class="freet"
@@ -9,46 +6,25 @@
       <h3 class="author">
         @{{ freet.author }}
 
-        <button @click="followAuthor">
+        <button v-if="$store.state.username !== freet.author" @click="followAuthor">
           Follow
         </button>
       </h3>
+      <button @click="addToReadingList">
+        Read Later
+      </button>
+      <button @click="addToCm">
+        Add to Collaborative Moment
+      </button>
       <div
         v-if="$store.state.username === freet.author"
         class="actions"
       >
-        <!-- <button
-          v-if="editing"
-          @click="submitEdit"
-        >
-          ✅ Save changes
-        </button>
-        <button
-          v-if="editing"
-          @click="stopEditing"
-        >
-          🚫 Discard changes
-        </button>
-        <button
-          v-if="!editing"
-          @click="startEditing"
-        >
-          ✏️ Edit
-        </button> -->
-        <button @click="addToReadingList">
-          Read Later
-        </button>
         <button @click="deleteFreet">
           🗑️ Delete
         </button>
       </div>
     </header>
-    <!-- <textarea
-      v-if="editing"
-      class="content"
-      :value="draft"
-      @input="draft = $event.target.value"
-    /> -->
     <p
       class="content"
     >
@@ -82,26 +58,10 @@ export default {
   },
   data() {
     return {
-      // editing: false, // Whether or not this freet is in edit mode
-      // draft: this.freet.content, // Potentially-new content for this freet
       alerts: {} // Displays success/error messages encountered during freet modification
     };
   },
   methods: {
-    // startEditing() {
-    //   /**
-    //    * Enables edit mode on this freet.
-    //    */
-    //   this.editing = true; // Keeps track of if a freet is being edited
-    //   this.draft = this.freet.content; // The content of our current "draft" while being edited
-    // },
-    // stopEditing() {
-    //   /**
-    //    * Disables edit mode on this freet.
-    //    */
-    //   this.editing = false;
-    //   this.draft = this.freet.content;
-    // },
     deleteFreet() {
       /**
        * Deletes this freet.
@@ -132,6 +92,9 @@ export default {
         }
       };
       this.request(params);
+    },
+    addToCm() {
+      // TODO
     },
     followAuthor() {
       /**

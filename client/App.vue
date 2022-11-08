@@ -1,18 +1,16 @@
 <template>
   <div id="app">
-    <header>
-      <NavBar />
-    </header>
+    <Sidebar />
     <router-view />
   </div>
 </template>
 
 <script>
-import NavBar from '@/components/common/NavBar.vue';
+import Sidebar from '@/components/common/Sidebar.vue';
 
 export default {
   name: 'App',
-  components: {NavBar},
+  components: {Sidebar},
   beforeCreate() {
     // Sync stored username to current session
     fetch('/api/users/session', {
@@ -31,19 +29,31 @@ export default {
 <style>
 * {
   box-sizing: border-box;
+  /* Resets */
+  margin: 0;
+  padding: 0;
+  font-family: Helvetica, sans-serif;
+  color: #232323;
 }
 
-body {
-  height: 100vh;
-  flex-direction: column;
+#app {
   display: flex;
-  padding: 0;
-  margin: 0;
-  font-size: 1.2em;
+  gap: 2rem;
+  width: 95%;
+  max-width: 60rem;
+  margin: 2rem auto;
+}
+
+aside {
+  width: 100%;
+  max-width: 16rem;
+  position: sticky;
+  top: 2rem;
+  height: 100%;
 }
 
 main {
-  padding: 0 5em 5em;
+  width: 100%;
 }
 
 .alerts {
