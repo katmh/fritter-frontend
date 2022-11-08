@@ -9,6 +9,7 @@ import dotenv from 'dotenv';
 import * as userValidator from '../server/user/middleware';
 
 import {userRouter} from '../server/user/router';
+import {followRouter} from '../server/follow/router';
 import {freetRouter} from '../server/freet/router';
 import {cmRouter} from '../server/collaborativemoment/router';
 import {readingListRouter} from '../server/readinglist/router';
@@ -73,6 +74,7 @@ app.use(userValidator.isCurrentSessionUserExists);
 
 // Add routers from routes folder
 app.use('/api/users', userRouter);
+app.use('/api/follows', followRouter);
 app.use('/api/freets', freetRouter);
 app.use('/api/cm', cmRouter);
 app.use('/api/readinglist', readingListRouter);

@@ -8,6 +8,10 @@
     <header>
       <h3 class="author">
         @{{ freet.author }}
+
+        <button @click="followAuthor">
+          Follow
+        </button>
       </h3>
       <div
         v-if="$store.state.username === freet.author"
@@ -39,14 +43,13 @@
         </button>
       </div>
     </header>
-    <textarea
+    <!-- <textarea
       v-if="editing"
       class="content"
       :value="draft"
       @input="draft = $event.target.value"
-    />
+    /> -->
     <p
-      v-else
       class="content"
     >
       {{ freet.content }}
@@ -130,6 +133,23 @@ export default {
       };
       this.request(params);
     },
+    followAuthor() {
+      /**
+       * Follow author of freet.
+       */
+      console.log('this.freet', this.freet);
+      const params = {
+        endpoint: `api/follows/${this.freet.authorId}`,
+        method: 'POST',
+        callback: () => {
+          this.$store.commit('alert', {
+            message: 'Followed author',
+            status: 'success'
+          })
+        }
+      };
+      this.request(params);
+    },
     // submitEdit() {
     //   /**
     //    * Updates freet to have the submitted draft content.
@@ -171,7 +191,7 @@ export default {
           throw new Error(res.error);
         }
 
-        this.editing = false;
+        // this.editing = false;
         this.$store.commit('refreshFreets');
 
         params.callback();

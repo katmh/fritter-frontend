@@ -66,7 +66,7 @@ import GetFreetsForm from '@/components/Freet/GetFreetsForm.vue';
 import CreateCMForm from '@/components/CM/CreateCMForm.vue';
 
 export default {
-  name: 'FreetPage',
+  name: 'FreetsPage',
   components: {
     FreetComponent,
     GetFreetsForm,

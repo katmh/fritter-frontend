@@ -4,12 +4,7 @@ import FreetModel from './model';
 import UserCollection from '../user/collection';
 
 /**
- * This files contains a class that has the functionality to explore freets
- * stored in MongoDB, including adding, finding, updating, and deleting freets.
- * Feel free to add additional operations in this file.
- *
- * Note: HydratedDocument<Freet> is the output of the FreetModel() constructor,
- * and contains all the information in Freet. https://mongoosejs.com/docs/typescript.html
+ * Class with methods for interacting with the `freets` MongoDB collection.
  */
 class FreetCollection {
   /**
@@ -27,7 +22,7 @@ class FreetCollection {
       content,
       dateModified: date
     });
-    await freet.save(); // Saves freet to MongoDB
+    await freet.save();
     return freet.populate('authorId');
   }
 
@@ -60,6 +55,16 @@ class FreetCollection {
   static async findAllByUsername(username: string): Promise<Array<HydratedDocument<Freet>>> {
     const author = await UserCollection.findOneByUsername(username);
     return FreetModel.find({authorId: author._id}).sort({dateModified: -1}).populate('authorId');
+  }
+
+  /**
+   * Get `limit` most recent freets from users that user with ID `userId` follows.
+   */
+  static async findRecentFromFollows(userId: string, limit: number): Promise<Array<HydratedDocument<Freet>>> {
+    const follows = (await UserCollection.findOneByUserId(userId)).follows;
+    return FreetModel.find({
+      // TODO
+    })
   }
 
   /**

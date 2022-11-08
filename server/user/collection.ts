@@ -2,13 +2,13 @@ import type {HydratedDocument, Types} from 'mongoose';
 import type {User} from './model';
 import UserModel from './model';
 
+type FollowReturn = {
+  follower: HydratedDocument<User>;
+  followee: HydratedDocument<User>;
+};
+
 /**
- * This file contains a class with functionality to interact with users stored
- * in MongoDB, including adding, finding, updating, and deleting. Feel free to add
- * additional operations in this file.
- *
- * Note: HydratedDocument<User> is the output of the UserModel() constructor,
- * and contains all the information in User. https://mongoosejs.com/docs/typescript.html
+ * Class with methods for interacting with `users` collection in MongoDB.
  */
 class UserCollection {
   /**
@@ -23,6 +23,8 @@ class UserCollection {
       username,
       password,
       dateJoined: new Date(),
+      follows: [],
+      followers: [],
       readingList: []
     });
     await user.save();
@@ -93,6 +95,48 @@ class UserCollection {
   static async deleteOne(userId: Types.ObjectId | string): Promise<boolean> {
     const user = await UserModel.deleteOne({_id: userId});
     return user !== null;
+  }
+
+  /**
+   * Have a user follow (denoted the follower) follow another user (the followee).
+   *
+   * @param {Types.ObjectId | string} followerId - id of follower
+   * @param {string} followeeId - ID of followee
+   * @return {Promise<FollowReturn>} - object containing updated follower and followee
+   */
+    static async follow(followerId: Types.ObjectId | string, followeeId: string): Promise<FollowReturn> {
+    const followee = await UserModel.findOneAndUpdate(
+      {_id: followeeId},
+      {$addToSet: {followers: followerId}},
+      {new: true} // Return modified document rather than original
+    );
+    const follower = await UserModel.findOneAndUpdate(
+      {_id: followerId},
+      {$addToSet: {follows: followee._id}},
+      {new: true}
+    );
+    return {follower, followee};
+  }
+
+  /**
+   * Have a user follow (denoted the follower) unfollow another user (the followee).
+   *
+   * @param {Types.ObjectId | string} followerId - id of follower
+   * @param {string} followeeId - ID of followee
+   * @return {Promise<FollowReturn>} - object containing updated follower and followee
+   */
+  static async unfollow(followerId: Types.ObjectId | string, followeeId: string): Promise<FollowReturn> {
+    const followee = await UserModel.findOneAndUpdate(
+      {_id: followeeId},
+      {$pull: {followers: followerId}},
+      {new: true} // Return modified document rather than original
+    );
+    const follower = await UserModel.findOneAndUpdate(
+      {_id: followerId},
+      {$pull: {follows: followee._id}},
+      {new: true}
+    );
+    return {follower, followee};
   }
 
   /**

@@ -8,12 +8,13 @@ import * as util from './util';
 const router = express.Router();
 
 /**
- * Get all the freets
+ * Get page of freets for lite-algorithmic feed. If logged in, freets mostly come from
+ * the users you follow (most recent first), with some entries from your reading list
+ * if applicable. If not logged in, freets come from every user, also most recent first.
  *
  * @name GET /api/freets
  *
- * @return {FreetResponse[]} - A list of all the freets sorted in descending
- *                      order by date modified
+ * @return {FreetResponse[]} - A list of freets for the home feed, tailored to the user
  */
 /**
  * Get freets by author.
@@ -34,6 +35,7 @@ router.get(
       return;
     }
 
+    // TODO: implement feed algorithm
     const allFreets = await FreetCollection.findAll();
     const response = allFreets.map(util.constructFreetResponse);
     res.status(200).json(response);
