@@ -56,6 +56,12 @@ main {
   width: 100%;
 }
 
+.page_header {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
 .alerts {
     position: absolute;
     z-index: 99;
