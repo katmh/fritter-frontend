@@ -23,6 +23,7 @@ class UserCollection {
       username,
       password,
       dateJoined: new Date(),
+      freets: [],
       follows: [],
       followers: [],
       readingList: []
@@ -95,6 +96,32 @@ class UserCollection {
   static async deleteOne(userId: Types.ObjectId | string): Promise<boolean> {
     const user = await UserModel.deleteOne({_id: userId});
     return user !== null;
+  }
+
+  /**
+   * Add a tweet to a user's freets.
+   *
+   * @param userId - id of freet author
+   * @param freetId - id of freet
+   */
+  static async addFreet(userId: Types.ObjectId | string, freetId: Types.ObjectId | string): Promise<void> {
+    await UserModel.findOneAndUpdate(
+      {_id: userId},
+      {$addToSet: {freets: freetId}}
+    );
+  }
+
+  /**
+   * Remove a freet from a user's freets.
+   * 
+   * @param userId - id of freet author
+   * @param freetId - id of freet
+   */
+  static async deleteFreet(userId: Types.ObjectId | string, freetId: Types.ObjectId | string): Promise<void> {
+    await UserModel.findOneAndUpdate(
+      {_id: userId},
+      {$pull: {freets: freetId}}
+    );
   }
 
   /**

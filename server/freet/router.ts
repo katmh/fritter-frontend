@@ -1,20 +1,47 @@
 import type {NextFunction, Request, Response} from 'express';
 import express from 'express';
 import FreetCollection from './collection';
+import UserCollection from '../user/collection';
 import * as userValidator from '../user/middleware';
 import * as freetValidator from '../freet/middleware';
 import * as util from './util';
+import UserModel from '../user/model';
+import { HydratedDocument } from 'mongoose';
+import type {Freet} from './model';
 
 const router = express.Router();
 
+const insert = <T,>(arr: T[], item: T, index: number): void => {
+  arr.splice(index, 0, item); // Modifies in place
+}
+
+// https://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
+/**
+ * Returns a random integer between min (inclusive) and max (inclusive).
+ * The value is no lower than min (or the next integer greater than min
+ * if min isn't an integer) and no greater than max (or the next integer
+ * lower than max if max isn't an integer).
+ * Using Math.round() will give you a non-uniform distribution!
+ */
+ function getRandomInt(min: number, max: number) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+type FeedItem = {
+  freet: HydratedDocument<Freet>;
+  isFromReadingList: boolean;
+}
+
 /**
  * Get page of freets for lite-algorithmic feed. If logged in, freets mostly come from
- * the users you follow (most recent first), with some entries from your reading list
+ * the users you follow (most recent first) + yourself, w/ some entries from your reading list
  * if applicable. If not logged in, freets come from every user, also most recent first.
  *
  * @name GET /api/freets
  *
- * @return {FreetResponse[]} - A list of freets for the home feed, tailored to the user
+ * @return {FeedItem[]} - A list of freets for the home feed, tailored to the user
  */
 /**
  * Get freets by author.
@@ -35,18 +62,57 @@ router.get(
       return;
     }
 
-    // TODO: implement feed algorithm
-    const allFreets = await FreetCollection.findAll();
-    const response = allFreets.map(util.constructFreetResponse);
-    res.status(200).json(response);
+    // Get limited number of recent freets from followed users (or everyone, if not logged in)
+    const userId = req.session?.userId; // `null` if not logged in
+    const followsFeed = await FreetCollection.findRecentFromFollows(userId);
+
+    // Get reading list items that are not already in `followsFeed`
+    let readingListItems: Array<HydratedDocument<Freet>> = [];
+    if (userId) {
+      const user = await UserModel.findOne({_id: userId})
+        .populate({
+          path: 'readingList',
+          populate: {
+            path: 'authorId',
+            model: 'User'
+          }
+        })
+        .exec();
+      readingListItems = user.readingList as unknown as HydratedDocument<Freet>[];
+    }
+    readingListItems = readingListItems.filter((freet) => !followsFeed.includes(freet));
+
+    // Insert up to three reading list items into feed in random spots
+    const numToInsert = Math.min(readingListItems.length, 3);
+    const algorithmicFeed: FeedItem[] = followsFeed
+      .map((freet) => ({freet, isFromReadingList: false}));
+    for (let i = 0; i < numToInsert; i++) {
+      insert(
+        algorithmicFeed,
+        {freet: readingListItems[i], isFromReadingList: true},
+        getRandomInt(0, algorithmicFeed.length - 1)
+      );
+    }
+
+    res
+      .status(200)
+      .json(algorithmicFeed.map(
+        (item) => ({
+          freet: util.constructFreetResponse(item.freet),
+          isFromReadingList: item.isFromReadingList
+        })
+      ));
   },
   [
     userValidator.isAuthorExists
   ],
   async (req: Request, res: Response) => {
     const authorFreets = await FreetCollection.findAllByUsername(req.query.author as string);
-    const response = authorFreets.map(util.constructFreetResponse);
-    res.status(200).json(response);
+    res
+      .status(200)
+      .json(authorFreets.map(
+        (freet) => ({freet: util.constructFreetResponse(freet)})
+      ));
   }
 );
 
@@ -70,6 +136,7 @@ router.post(
   async (req: Request, res: Response) => {
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
     const freet = await FreetCollection.addOne(userId, req.body.content);
+    await UserCollection.addFreet(userId, freet._id);
 
     res.status(201).json({
       message: 'Your freet was created successfully.',
@@ -96,7 +163,10 @@ router.delete(
     freetValidator.isValidFreetModifier
   ],
   async (req: Request, res: Response) => {
-    await FreetCollection.deleteOne(req.params.freetId);
+    const userId = req.session.userId as string;
+    const {freetId} = req.params;
+    await UserCollection.deleteFreet(userId, freetId);
+    await FreetCollection.deleteOne(freetId);
     res.status(200).json({
       message: 'Your freet was deleted successfully.'
     });

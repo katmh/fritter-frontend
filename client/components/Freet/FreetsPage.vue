@@ -47,7 +47,7 @@
         <FreetComponent
           v-for="freet in $store.state.freets"
           :key="freet.id"
-          :freet="freet"
+          :freet="freet.freet"
         />
       </section>
       <article

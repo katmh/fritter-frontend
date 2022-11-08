@@ -6,6 +6,7 @@ export type User = {
   username: string;
   password: string;
   dateJoined: Date;
+  freets: Types.ObjectId[];
   follows: Types.ObjectId[];
   followers: Types.ObjectId[];
   readingList: Types.ObjectId[];
@@ -24,6 +25,11 @@ const UserSchema = new Schema({
     type: Date,
     required: true
   },
+  freets: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Freet',
+    required: true
+  }],
   follows: [{
     type: Schema.Types.ObjectId,
     ref: 'User',

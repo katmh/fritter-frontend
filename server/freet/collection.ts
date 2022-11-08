@@ -2,6 +2,7 @@ import type {HydratedDocument, Types} from 'mongoose';
 import type {Freet} from './model';
 import FreetModel from './model';
 import UserCollection from '../user/collection';
+import UserModel from '../user/model';
 
 /**
  * Class with methods for interacting with the `freets` MongoDB collection.
@@ -59,12 +60,38 @@ class FreetCollection {
 
   /**
    * Get `limit` most recent freets from users that user with ID `userId` follows.
+   * If `userId` is not provided, gets freets from all Fritter users.
    */
-  static async findRecentFromFollows(userId: string, limit: number): Promise<Array<HydratedDocument<Freet>>> {
-    const follows = (await UserCollection.findOneByUserId(userId)).follows;
-    return FreetModel.find({
-      // TODO
-    })
+  static async findRecentFromFollows(userId: string | null, limit = 20): Promise<Array<HydratedDocument<Freet>>> {
+    // If user is logged in, set of users to source feed freets from
+    // is who they follow. Otherwise, it'll be be all users on Fritter.
+    const sourceUsers = userId ? (
+      (await UserCollection.findOneByUserId(userId))
+        .follows
+        .map((objectId) => objectId.toString())
+      .concat(userId) // Get your own freets too
+    ) : null;
+
+    // Get all freets from followed accounts
+    const followsWithFreets = await UserModel
+      .find(sourceUsers ? {_id: {$in: sourceUsers}} : {})
+      .populate({
+        path: 'freets',
+        populate: {
+          path: 'authorId',
+          model: 'User'
+        }
+      })
+      .exec();
+
+    // Wrangle into a simple array :')
+    const freets = followsWithFreets
+      .reduce((prev, curr) => prev.concat(curr.freets), []) as unknown as HydratedDocument<Freet>[];
+    
+    const sortedReverseChrono = freets.sort(
+      (a, b) => (new Date(b.dateCreated)).valueOf() - (new Date(a.dateCreated)).valueOf()
+    );
+    return sortedReverseChrono.slice(0, limit);
   }
 
   /**
