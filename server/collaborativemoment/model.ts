@@ -1,4 +1,4 @@
-import type {BasicPopulatedFreet} from 'freet/model';
+import type {PopulatedFreet} from '../freet/model';
 import type {Types} from 'mongoose';
 import {Schema, model} from 'mongoose';
 import type {User} from '../user/model';
@@ -20,7 +20,7 @@ export type PopulatedCollaborativeMoment = {
   description: string;
   admins: User[];
   editors: User[];
-  entries: BasicPopulatedFreet[];
+  entries: PopulatedFreet[];
 };
 
 const CollaborativeMomentSchema = new Schema<CollaborativeMoment>({

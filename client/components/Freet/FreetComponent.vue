@@ -164,7 +164,7 @@ export default {
         const r = await fetch(params.endpoint, {
           method: params.method,
           headers: {'Content-Type': 'application/json'},
-          ...(params.body ? {body: params.body} : NULL)
+          ...(params.body ? {body: params.body} : null)
         });
         if (!r.ok) {
           const res = await r.json();
