@@ -3,36 +3,22 @@
     <header>
       <router-link to="/" id="logo">
         <img src="../../public/logo.svg">
-        <h1 class="title">Fritter</h1>
+        <h1 class="title">fritter.</h1>
       </router-link>
     </header>
     <nav>
-      <router-link to="/">
-        Home
+      <router-link to="/">home</router-link>
+      <router-link v-if="$store.state.username" to="/account">
+        account
       </router-link>
-      <router-link
-        v-if="$store.state.username"
-        to="/account"
-      >
-        Account
+      <router-link v-if="$store.state.username" to="/readinglist">
+        reading list
       </router-link>
-      <router-link
-        v-if="$store.state.username"
-        to="/readinglist"
-      >
-        Reading List
+      <router-link v-if="$store.state.username" to="/moments">
+        moments
       </router-link>
-      <router-link
-        v-if="$store.state.username"
-        to="/moments"
-      >
-        Moments
-      </router-link>
-      <router-link
-        v-else
-        to="/login"
-      >
-        Login
+      <router-link v-else to="/login">
+        login
       </router-link>
     </nav>
     <p>@{{ $store.state.username }}</p>
@@ -65,6 +51,10 @@ aside {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  height: 100vh;
+  border-right: 1px solid #aaa;
+  padding-top: 2rem;
+  padding-right: 2rem;
 }
 
 #logo {
@@ -82,10 +72,47 @@ nav {
   flex-direction: column;
 }
 
+/* https://cssgradient.io/blog/css-gradient-text/ */
+/* https://stackoverflow.com/questions/23441060/animating-linear-gradient-using-css */
+@-webkit-keyframes Animation {
+    0%{background-position:10% 0%}
+    50%{background-position:91% 100%}
+    100%{background-position:10% 0%}
+}
+@-moz-keyframes Animation {
+    0%{background-position:10% 0%}
+    50%{background-position:91% 100%}
+    100%{background-position:10% 0%}
+}
+@keyframes Animation { 
+    0%{background-position:10% 0%}
+    50%{background-position:91% 100%}
+    100%{background-position:10% 0%}
+}
+
 nav a {
   display: block;
   padding: 0.75rem 0;
   font-size: 1.25rem;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.2s;
+
+  background: linear-gradient(90deg, #bab3ad, #cd6700);
+  background-size: 200%;
+  background-clip: text;
+  background-position: 10% 0%;
+  -webkit-text-fill-color: transparent;
+}
+
+nav a:hover {
+  background: linear-gradient(90deg, #bab3ad, #cd6700);
+  background-position: 80% 0%;
+
+  /* Same as before */
+  background-size: 200%;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .title {
@@ -95,9 +122,5 @@ nav a {
 
 img {
     height: 32px;
-}
-
-.alerts {
-    width: 25%;
 }
 </style>

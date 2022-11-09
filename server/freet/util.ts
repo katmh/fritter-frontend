@@ -18,7 +18,7 @@ type FreetResponse = {
  * @param {Date} date - A date object
  * @returns {string} - formatted date as string
  */
-const formatDate = (date: Date): string => moment(date).format('MMMM Do YYYY, h:mm:ss a');
+const formatDate = (date: Date): string => moment(date).format('MMM d, yyyy h:mm a').toLowerCase();
 
 /**
  * Transform a raw Freet object from the database into an object

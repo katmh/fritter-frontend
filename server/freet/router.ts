@@ -99,7 +99,9 @@ router.get(
       .json(algorithmicFeed.map(
         (item) => ({
           freet: util.constructFreetResponse(item.freet),
-          isFromReadingList: item.isFromReadingList
+          metadata: {
+            isFromReadingList: item.isFromReadingList
+          }
         })
       ));
   },

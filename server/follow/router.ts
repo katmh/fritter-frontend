@@ -8,6 +8,26 @@ import * as util from '../user/util';
 const router = express.Router();
 
 /**
+ * Get the follows of the currently logged in user.
+ * 
+ * @name GET /api/follows
+ * 
+ * @return {string[]} - List of IDs of users that the currently logged in user follows
+ * @throws {403} - If user is not logged in
+ */
+router.get(
+  '/',
+  [
+    userValidator.isUserLoggedIn
+  ],
+  async (req: Request, res: Response) => {
+    const userId = req.session.userId as string;
+    const user = await UserCollection.findOneByUserId(userId);
+    res.status(200).json(user.follows);
+  }
+)
+
+/**
  * Have the user who is currently logged in (denoted the follower)
  * follow another user (the followee).
  *

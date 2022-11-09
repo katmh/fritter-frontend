@@ -12,7 +12,10 @@ const store = new Vuex.Store({
     filter: null, // Username to filter shown freets by (null = show all)
     freets: [], // All freets created in the app
     username: null, // Username of the logged in user
-    alerts: {} // global success/error messages encountered during submissions to non-visible forms
+    alerts: {}, // global success/error messages encountered during submissions to non-visible forms
+
+    follows: [],
+    readingList: []
   },
   mutations: {
     alert(state, payload) {
@@ -45,6 +48,13 @@ const store = new Vuex.Store({
        */
       state.freets = freets;
     },
+    updateFollows(state, follows) {
+      /**
+       * Update the stored follows to the provided follows.
+       * @param follows - Follows to store
+       */
+      state.follows = follows;
+    },
     async refreshFreets(state) {
       /**
        * Request the server for the currently available freets.
@@ -52,6 +62,28 @@ const store = new Vuex.Store({
       const url = state.filter ? `/api/users/${state.filter}/freets` : '/api/freets';
       const res = await fetch(url).then(async r => r.json());
       state.freets = res;
+    },
+    async refreshFollows(state) {
+      /**
+       * Refreshes the `follows` field of the store by checking the server.
+       * If no user is logged in, sets `follows` to empty array.
+       */
+      try {
+        state.follows = await fetch('api/follows').then(async r => r.json());
+      } catch (_) {
+        state.follows = [];
+      }
+    },
+    async refreshReadingList(state) {
+      /**
+       * Refreshes the `readingList` field of the store by checking the server.
+       * If no user is logged in, sets `readingList` to empty array.
+       */
+      try {
+        state.readingList = await fetch('api/readinglist').then(async r => r.json());
+      } catch (_) {
+        state.readingList = [];
+      }
     }
   },
   // Store data across page refreshes, only discard on browser close

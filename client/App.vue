@@ -22,6 +22,10 @@ export default {
 
     // Clear alerts on page refresh
     this.$store.state.alerts = {};
+  },
+  mounted() {
+    this.$store.commit('refreshFollows');
+    this.$store.commit('refreshReadingList');
   }
 };
 </script>
@@ -36,30 +40,81 @@ export default {
   color: #232323;
 }
 
+/* Prevent overscrolling :) https://stackoverflow.com/questions/12046315/prevent-overscrolling-of-web-page */
+html {
+  overflow: hidden;
+  height: 100%;
+}
+body {
+  height: 100%;
+  overflow: auto;
+  background: #fcfcfd;
+}
+
 #app {
   display: flex;
-  gap: 2rem;
   width: 95%;
-  max-width: 60rem;
-  margin: 2rem auto;
+  max-width: 64rem;
+  margin: 0 auto;
 }
 
 aside {
   width: 100%;
   max-width: 16rem;
   position: sticky;
-  top: 2rem;
+  top: 0;
   height: 100%;
 }
 
 main {
   width: 100%;
+  padding: 2rem auto;
+  border-right: 1px solid #aaa;
 }
 
 .page_header {
+  margin-top: 2rem;
   margin-bottom: 1rem;
   display: flex;
   justify-content: space-between;
+}
+
+.page_content {
+  margin: 0 2rem;
+}
+
+.submit_button {
+  padding: 0.7rem 1.4rem;
+  font-size: 1.1rem;
+  border: none;
+  outline: none;
+  transition: 0.1s;
+  background: #f93;
+  cursor: pointer;
+  border-radius: 2rem;
+  color: #fff;
+  font-weight: bold;
+}
+
+.submit_button:hover {
+  background: #ff8d1a;
+}
+
+.action_button {
+  padding: 0.3rem 0.8rem;
+  background: transparent;
+  font-size: 0.9rem;
+  border: none;
+  outline: none;
+  transition: 0.2s;
+  border: 2px solid #f93;
+  cursor: pointer;
+  border-radius: 2rem;
+  font-weight: bold;
+}
+
+.action_button:hover {
+  color: #ff8d1a;
 }
 
 .alerts {

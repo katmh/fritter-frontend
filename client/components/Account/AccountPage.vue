@@ -1,8 +1,8 @@
 <template>
   <main>
-    <section>
-      <header>
-        <h2>Settings</h2>
+    <section class="page_content">
+      <header class="page_header">
+        <h2>settings.</h2>
       </header>
       <ChangeUsernameForm />
       <ChangePasswordForm />

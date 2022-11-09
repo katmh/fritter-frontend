@@ -2,14 +2,15 @@
 
 <template>
   <main>
-    <section v-if="$store.state.username">
-      <h2>Home</h2>
+    <section class="page_content" v-if="$store.state.username">
+      <header class="page_header">
+        <h2>home.</h2>
+      </header>
       <CreateFreetForm />
-      <CreateCMForm />
     </section>
-    <section v-else>
+    <section class="page_content" v-else>
       <header>
-        <h2>Welcome to Fritter!</h2>
+        <h2>welcome to fritter :></h2>
       </header>
       <article>
         <h3>
@@ -21,26 +22,7 @@
       </article>
     </section>
     <section>
-      <header>
-        <div class="left">
-          <h2>
-            <span v-if="$store.state.filter">
-              Viewing freets by @{{ $store.state.filter }}
-            </span>
-            <span v-else>
-              Home
-            </span>
-          </h2>
-        </div>
-        <div class="right">
-          <GetFreetsForm
-            ref="getFreetsForm"
-            value="author"
-            placeholder="🔍 Filter by author (optional)"
-            button="🔄 Get freets"
-          />
-        </div>
-      </header>
+
       <section
         v-if="$store.state.freets.length"
       >
@@ -48,6 +30,7 @@
           v-for="freet in $store.state.freets"
           :key="freet.id"
           :freet="freet.freet"
+          :metadata="freet.metadata"
         />
       </section>
       <article
@@ -63,15 +46,13 @@
 import FreetComponent from '@/components/Freet/FreetComponent.vue';
 import CreateFreetForm from '@/components/Freet/CreateFreetForm.vue';
 import GetFreetsForm from '@/components/Freet/GetFreetsForm.vue';
-import CreateCMForm from '@/components/CM/CreateCMForm.vue';
 
 export default {
   name: 'FreetsPage',
   components: {
     FreetComponent,
     GetFreetsForm,
-    CreateFreetForm,
-    CreateCMForm
+    CreateFreetForm
   },
   mounted() {
     this.$refs.getFreetsForm.submit();

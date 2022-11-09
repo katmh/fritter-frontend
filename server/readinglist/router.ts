@@ -36,10 +36,7 @@ router.get(
       })
       .exec();
     const readingList = user.readingList as unknown as HydratedDocument<Freet>[];
-    res.status(200).json({
-      message: 'Successfully fetched reading list.',
-      readingList: util.constructReadingListResponse(readingList)
-    })
+    res.status(200).json(util.constructReadingListResponse(readingList))
   }
 )
 
