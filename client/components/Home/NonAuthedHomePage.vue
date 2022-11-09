@@ -5,7 +5,12 @@
     </header>
 
     <h1>sign up</h1>
-    <h3>{{tagline}}</h3>
+    <h3>
+      {{tagline}}
+      <span @click="cycleTagline" id="refresh">
+        <Icon src="/icons/refresh-cw.svg"  />
+      </span>
+    </h3>
     <RegisterForm />
 
     <footer>
@@ -15,21 +20,39 @@
 </template>
 
 <script>
+import Icon from '@/components/common/Icon.vue';
 import RegisterForm from '@/components/Login/RegisterForm.vue';
 
-const taglines = ['it’s free and always will be.', 'it’s quick and easy.'];
+const taglines = [
+  'it’s free and always will be.',
+  'it’s quick and easy.',
+  'the f stands for facebook.'
+];
+
 export default {
   name: 'NonAuthedHomePage',
   components: {
+    Icon,
     RegisterForm
   },
   mounted() {
     // Select random tagline
-    this.tagline = taglines[Math.floor(Math.random() * 2)];
+    this.taglineIndex = Math.floor(Math.random() * 3);
   },
   data() {
     return {
-      tagline: ''
+      taglineIndex: 0
+    }
+  },
+  computed: {
+    tagline() {
+      return taglines[this.taglineIndex];
+    }
+  },
+  methods: {
+    cycleTagline() {
+      console.log('hi');
+      this.taglineIndex = (this.taglineIndex + 1) % taglines.length;
     }
   }
 };
@@ -38,6 +61,10 @@ export default {
 <style scoped>
 .page_header {
   max-width: 30rem; /* So the one-liner wraps */
+}
+
+#refresh {
+  cursor: pointer;
 }
 
 footer {
