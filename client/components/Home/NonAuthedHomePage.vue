@@ -51,7 +51,6 @@ export default {
   },
   methods: {
     cycleTagline() {
-      console.log('hi');
       this.taglineIndex = (this.taglineIndex + 1) % taglines.length;
     }
   }

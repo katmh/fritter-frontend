@@ -1,5 +1,6 @@
 import type {HydratedDocument, Types} from 'mongoose';
 import type {User} from './model';
+import type {Freet} from '../freet/model';
 import UserModel from './model';
 
 type FollowReturn = {
@@ -164,6 +165,18 @@ class UserCollection {
       {new: true}
     );
     return {follower, followee};
+  }
+
+  /**
+   * Get reading list items
+   */
+  static async getReadingList(userId: Types.ObjectId | string): Promise<HydratedDocument<Freet>[]> {
+    const user = await UserModel.findOne({_id: userId})
+      .populate({
+        path: 'readingList',
+        populate: {path: 'authorId', model: 'User'}
+      }).exec();
+    return user.readingList as unknown as HydratedDocument<Freet>[];
   }
 
   /**

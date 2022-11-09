@@ -63,7 +63,7 @@ class FreetCollection {
    * If `userId` is not provided, gets freets from all Fritter users.
    */
   static async findRecentFromFollows(userId: string | null, limit = 20): Promise<Array<HydratedDocument<Freet>>> {
-    // If user is logged in, set of users to source feed freets from
+    // If user is logged in and follows users, set of users to source feed freets from
     // is who they follow. Otherwise, it'll be be all users on Fritter.
     const sourceUsers = userId ? (
       (await UserCollection.findOneByUserId(userId))

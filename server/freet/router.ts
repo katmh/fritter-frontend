@@ -31,13 +31,13 @@ const insert = <T,>(arr: T[], item: T, index: number): void => {
 
 type FeedItem = {
   freet: HydratedDocument<Freet>;
-  isFromReadingList: boolean;
+  metadata: {
+    isFromReadingList: boolean;
+  }
 }
 
 /**
- * Get page of freets for lite-algorithmic feed. If logged in, freets mostly come from
- * the users you follow (most recent first) + yourself, w/ some entries from your reading list
- * if applicable. If not logged in, freets come from every user, also most recent first.
+ * Get freets for home feed.
  *
  * @name GET /api/freets
  *
@@ -62,48 +62,24 @@ router.get(
       return;
     }
 
-    // Get limited number of recent freets from followed users (or everyone, if not logged in)
-    const userId = req.session?.userId; // `null` if not logged in
-    const followsFeed = await FreetCollection.findRecentFromFollows(userId);
+    const allFreets = await FreetCollection.findAll();
+    const feed: FeedItem[] = allFreets.map((freet) => ({
+      freet,
+      metadata: {isFromReadingList: false}
+    }));
 
-    // Get reading list items that are not already in `followsFeed`
-    let readingListItems: Array<HydratedDocument<Freet>> = [];
-    if (userId) {
-      const user = await UserModel.findOne({_id: userId})
-        .populate({
-          path: 'readingList',
-          populate: {
-            path: 'authorId',
-            model: 'User'
-          }
-        })
-        .exec();
-      readingListItems = user.readingList as unknown as HydratedDocument<Freet>[];
-    }
-    readingListItems = readingListItems.filter((freet) => !followsFeed.includes(freet));
-
-    // Insert up to three reading list items into feed in random spots
-    const numToInsert = Math.min(readingListItems.length, 3);
-    const algorithmicFeed: FeedItem[] = followsFeed
-      .map((freet) => ({freet, isFromReadingList: false}));
-    for (let i = 0; i < numToInsert; i++) {
-      insert(
-        algorithmicFeed,
-        {freet: readingListItems[i], isFromReadingList: true},
-        getRandomInt(0, algorithmicFeed.length - 1)
-      );
+    const userId = req.session.userId as string;
+    const readingListFreets = userId ? await UserCollection.getReadingList(userId) : [];
+    // Insert up to 3 reading list into feed in random spots
+    const NUM_READING_LIST_INSERTS = Math.min(3, readingListFreets.length);
+    for (let i = 0; i < NUM_READING_LIST_INSERTS; i++) {
+      insert(feed, {
+        freet: readingListFreets[i],
+        metadata: {isFromReadingList: true}
+      }, getRandomInt(0, feed.length - 1));
     }
 
-    res
-      .status(200)
-      .json(algorithmicFeed.map(
-        (item) => ({
-          freet: util.constructFreetResponse(item.freet),
-          metadata: {
-            isFromReadingList: item.isFromReadingList
-          }
-        })
-      ));
+    res.status(200).json(feed);
   },
   [
     userValidator.isAuthorExists
