@@ -26,10 +26,17 @@ const isCurrentSessionUserExists = async (req: Request, res: Response, next: Nex
  * Checks if a username in req.body is valid, that is, it matches the username regex
  */
 const isValidUsername = (req: Request, res: Response, next: NextFunction) => {
+  if (!req.body.username) {
+    res.status(400).json({
+      error: 'username cannot be empty'
+    });
+    return;
+  }
+  
   const usernameRegex = /^\w+$/i;
   if (!usernameRegex.test(req.body.username)) {
     res.status(400).json({
-      error: 'Username must be a nonempty alphanumeric string.'
+      error: 'username can only contain letters and numbers'
     });
     return;
   }

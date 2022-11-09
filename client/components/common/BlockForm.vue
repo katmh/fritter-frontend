@@ -32,20 +32,12 @@
     <article v-else>
       <p>{{ content }}</p>
     </article>
-    <div>
+    <footer>
       <button class="submit_button" type="submit">
         {{ buttonLabel }}
       </button>
-    </div>
-    <section class="alerts">
-      <article
-        v-for="(status, alert, index) in alerts"
-        :key="index"
-        :class="status"
-      >
-        <p>{{ alert }}</p>
-      </article>
-    </section>
+      <p v-for="(status, alert, index) in alerts" :key="index" :class="status">{{alert}}</p>
+    </footer>
   </form>
 </template>
 
@@ -63,6 +55,7 @@ export default {
       hasBody: false, // Whether or not form request has a body
       setUsername: false, // Whether or not stored username should be updated after form submission
       refreshFreets: false, // Whether or not stored freets should be updated after form submission
+      useGlobalAlerts: false,
       alerts: {}, // Displays success/error messages encountered during form submission
       callback: null // Function to run after successful form submission
     };
@@ -109,12 +102,15 @@ export default {
           this.callback();
         }
       } catch (e) {
-        this.$store.commit('alert', {
-          message: e,
-          status: 'error'
-        })
-        // this.$set(this.$store.state.alerts, e, 'error');
-        // setTimeout(() => this.$delete(this.$store.state.alerts, e), 3000);
+        if (this.useGlobalAlerts) {
+          this.$store.commit('alert', {
+            message: e,
+            status: 'error'
+          });
+        } else {
+          this.$set(this.alerts, e, 'error');
+          setTimeout(() => this.$delete(this.alerts, e), 3000);
+        }
       }
     }
   }
@@ -151,5 +147,11 @@ form h3 {
 textarea {
    font-family: inherit;
    font-size: inherit;
+}
+
+footer {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
 }
 </style>

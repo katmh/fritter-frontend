@@ -7,12 +7,15 @@
 </template>
 
 <script>
-import Sidebar from '@/components/common/Sidebar.vue';
 import Alerts from '@/components/common/Alerts.vue';
+import Sidebar from '@/components/common/Sidebar.vue';
 
 export default {
   name: 'App',
-  components: {Sidebar},
+  components: {
+    Alerts,
+    Sidebar
+  },
   beforeCreate() {
     // Sync stored username to current session
     fetch('/api/users/session', {
@@ -98,6 +101,9 @@ h3 {
 }
 a {
   color: #c60;
+}
+.error {
+  color: #c30;
 }
 
 .page_content {
