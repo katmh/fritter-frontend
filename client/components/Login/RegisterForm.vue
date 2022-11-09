@@ -13,10 +13,11 @@ export default {
       hasBody: true,
       setUsername: true,
       fields: [
-        {id: 'username', label: 'Username', value: ''},
-        {id: 'password', label: 'Password', value: ''}
+        {id: 'username', label: 'username', value: ''},
+        {id: 'password', label: 'password', value: ''}
       ],
-      title: 'Create account',
+      title: '',
+      button_label: 'sign up',
       callback: () => {
         const message = 'Successfully created an account!';
         this.$router.push({name: 'Home'});

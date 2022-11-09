@@ -9,17 +9,12 @@
       <CreateFreetForm />
     </section>
     <section class="page_content" v-else>
-      <header>
-        <h2>welcome to fritter :></h2>
+      <header class="page_header">
+        <h2>connect with friends and the<br />world around you on fritter.</h2>
       </header>
-      <article>
-        <h3>
-          <router-link to="/login">
-            Sign in
-          </router-link>
-          to create, edit, and delete freets.
-        </h3>
-      </article>
+      <h3>{{tagline}}</h3>
+      <RegisterForm />
+      <LoginForm />
     </section>
     <section>
 
@@ -43,19 +38,35 @@
 </template>
 
 <script>
+import RegisterForm from '@/components/Login/RegisterForm.vue';
+import LoginForm from '@/components/Login/LoginForm.vue';
+
 import FreetComponent from '@/components/Freet/FreetComponent.vue';
 import CreateFreetForm from '@/components/Freet/CreateFreetForm.vue';
 import GetFreetsForm from '@/components/Freet/GetFreetsForm.vue';
 
+const taglines = [
+  "it's free and always will be.",
+  "it's quick and easy."
+];
+
 export default {
   name: 'FreetsPage',
   components: {
+    RegisterForm,
+    LoginForm,
     FreetComponent,
     GetFreetsForm,
     CreateFreetForm
   },
   mounted() {
+    this.tagline = taglines[Math.floor(Math.random() * 2)];
     this.$refs.getFreetsForm.submit();
+  },
+  data() {
+    return {
+      tagline: ''
+    }
   }
 };
 </script>

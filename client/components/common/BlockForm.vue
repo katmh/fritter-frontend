@@ -3,7 +3,7 @@
 
 <template>
   <form @submit.prevent="submit">
-    <h3>{{ title }}</h3>
+    <h3 v-if="title">{{title}}</h3>
     <article
       v-if="fields.length"
     >
@@ -11,9 +11,10 @@
         v-for="field in fields"
         :key="field.id"
       >
-        <label :for="field.id">{{ field.label }}:</label>
+        <label :for="`${field.id}-${title}`">{{ field.label }}:</label>
         <textarea
           v-if="field.id === 'content'"
+          :id="`${field.id}-${title}`"
           :name="field.id"
           :value="field.value"
           @input="field.value = $event.target.value"
@@ -21,6 +22,7 @@
         <input
           v-else
           :type="field.id === 'password' ? 'password' : 'text'"
+          :id="`${field.id}-${title}`"
           :name="field.id"
           :value="field.value"
           @input="field.value = $event.target.value"
@@ -30,11 +32,11 @@
     <article v-else>
       <p>{{ content }}</p>
     </article>
-    <button
-      type="submit"
-    >
-      {{ title }}
-    </button>
+    <div>
+      <button class="submit_button" type="submit">
+        {{ button_label }}
+      </button>
+    </div>
     <section class="alerts">
       <article
         v-for="(status, alert, index) in alerts"
@@ -107,8 +109,12 @@ export default {
           this.callback();
         }
       } catch (e) {
-        this.$set(this.alerts, e, 'error');
-        setTimeout(() => this.$delete(this.alerts, e), 3000);
+        this.$store.commit('alert', {
+          message: e,
+          status: 'error'
+        })
+        // this.$set(this.$store.state.alerts, e, 'error');
+        // setTimeout(() => this.$delete(this.$store.state.alerts, e), 3000);
       }
     }
   }
@@ -117,12 +123,10 @@ export default {
 
 <style scoped>
 form {
-  border: 1px solid #111;
-  padding: 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-bottom: 14px;
+  margin: 1rem 0;
   position: relative;
 }
 

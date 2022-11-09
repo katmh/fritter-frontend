@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <Alerts />
     <Sidebar />
     <router-view />
   </div>
@@ -7,6 +8,7 @@
 
 <script>
 import Sidebar from '@/components/common/Sidebar.vue';
+import Alerts from '@/components/common/Alerts.vue';
 
 export default {
   name: 'App',
@@ -49,6 +51,7 @@ body {
   height: 100%;
   overflow: auto;
   background: #fcfcfd;
+  font-size: 1.1rem;
 }
 
 #app {
@@ -77,6 +80,24 @@ main {
   margin-bottom: 1rem;
   display: flex;
   justify-content: space-between;
+}
+
+h1, h2, h3 {
+  line-height: 1.3;
+  margin: 0.5em 0;
+}
+
+h1 {
+  font-size: 2.25rem;
+}
+h2 {
+  font-size: 1.75rem;
+}
+h3 {
+  font-size: 1.35rem;
+}
+a {
+  color: #c60;
 }
 
 .page_content {
@@ -115,6 +136,27 @@ main {
 
 .action_button:hover {
   color: #ff8d1a;
+}
+
+input[type="text"],
+input[type="password"] {
+  font-size: 1.1rem;
+  color: #343434;
+  padding: 0.6rem 1rem;
+  outline: none;
+  border-radius: 0.25rem;
+  border: 1px solid #aaa;
+  margin: 0.25rem 0 1rem;
+  max-width: 20rem;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  box-shadow: 0 0 4px #ccc;
+}
+
+form label {
+  padding: 0.25rem 0;
 }
 
 .alerts {

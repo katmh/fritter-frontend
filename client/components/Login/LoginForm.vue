@@ -13,10 +13,11 @@ export default {
       hasBody: true,
       setUsername: true,
       fields: [
-        {id: 'username', label: 'Username', value: ''},
-        {id: 'password', label: 'Password', value: ''}
+        {id: 'username', label: 'username', value: ''},
+        {id: 'password', label: 'password', value: ''}
       ],
-      title: 'Sign in',
+      title: 'already have an account? sign in.',
+      button_label: 'sign in',
       callback: () => {
         this.$router.push({name: 'Home'});
         this.$store.commit('alert', {

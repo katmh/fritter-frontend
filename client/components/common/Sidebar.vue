@@ -6,23 +6,17 @@
         <h1 class="title">fritter.</h1>
       </router-link>
     </header>
-    <nav>
+    <nav v-if="$store.state.username">
       <router-link to="/">home</router-link>
-      <router-link v-if="$store.state.username" to="/account">
-        account
-      </router-link>
-      <router-link v-if="$store.state.username" to="/readinglist">
-        reading list
-      </router-link>
-      <router-link v-if="$store.state.username" to="/moments">
-        moments
-      </router-link>
-      <router-link v-else to="/login">
-        login
-      </router-link>
+      <router-link to="/account">account</router-link>
+      <router-link to="/readinglist">reading list</router-link>
+      <router-link to="/moments">moments</router-link>
     </nav>
-    <p>@{{ $store.state.username }}</p>
-    <LogoutForm />
+    <section class="self" v-if="$store.state.username">
+      <p>@{{ $store.state.username }}</p>
+      <LogoutForm />
+    </section>
+  
     <section class="alerts">
       <article
         v-for="(status, alert, index) in $store.state.alerts"
