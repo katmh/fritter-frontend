@@ -9,7 +9,7 @@
     <RegisterForm />
 
     <footer>
-      already have an account? <router-link to="/login">sign in</router-link>
+      <p>already have an account? <router-link to="/login">sign in</router-link></p>
     </footer>
   </section>
 </template>

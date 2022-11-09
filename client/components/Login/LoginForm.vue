@@ -1,5 +1,3 @@
-<!-- Form for signing in (block style) -->
-
 <script>
 import BlockForm from '@/components/common/BlockForm.vue';
 
@@ -16,8 +14,7 @@ export default {
         {id: 'username', label: 'username', value: ''},
         {id: 'password', label: 'password', value: ''}
       ],
-      title: 'already have an account? sign in.',
-      button_label: 'sign in',
+      buttonLabel: 'sign in',
       callback: () => {
         this.$router.push({name: 'Home'});
         this.$store.commit('alert', {

@@ -1,32 +1,30 @@
-<!-- Page for account sign-in and registration -->
-<!-- User should be NOT authenticated in order to see this page -->
-
 <template>
   <main>
-    <section>
-      <header>
-        <h2>New to Fritter?</h2>
-      </header>
-      <RegisterForm />
-    </section>
-    <section>
-      <header>
-        <h2>Have an account?</h2>
+    <section class="page_content">
+      <header class="page_header">
+        <h2>sign in</h2>
       </header>
       <LoginForm />
+      <footer>
+        <p>don’t have an account? <router-link to="/">sign up</router-link></p>
+      </footer>
     </section>
   </main>
 </template>
 
 <script>
-import RegisterForm from '@/components/Login/RegisterForm.vue';
 import LoginForm from '@/components/Login/LoginForm.vue';
 
 export default {
   name: 'LoginPage',
   components: {
-    RegisterForm,
     LoginForm
   }
 };
 </script>
+
+<style scoped>
+footer {
+  margin-top: 2rem;
+}
+</style>

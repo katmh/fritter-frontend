@@ -34,7 +34,7 @@
     </article>
     <div>
       <button class="submit_button" type="submit">
-        {{ button_label }}
+        {{ buttonLabel }}
       </button>
     </div>
     <section class="alerts">
