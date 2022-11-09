@@ -16,7 +16,7 @@ export default {
         {id: 'username', label: 'username', value: ''},
         {id: 'password', label: 'password', value: ''}
       ],
-      title: '',
+      title: 'signup',
       buttonLabel: 'sign up',
       callback: () => {
         const message = 'Successfully created an account!';

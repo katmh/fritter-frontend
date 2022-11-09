@@ -14,6 +14,7 @@ export default {
         {id: 'username', label: 'username', value: ''},
         {id: 'password', label: 'password', value: ''}
       ],
+      title: 'signin',
       buttonLabel: 'sign in',
       callback: () => {
         this.$router.push({name: 'Home'});

@@ -3,7 +3,6 @@
 
 <template>
   <form @submit.prevent="submit">
-    <h3 v-if="title">{{title}}</h3>
     <article
       v-if="fields.length"
     >

@@ -11,7 +11,7 @@ export default {
       url: '/api/users/session',
       method: 'DELETE',
       setUsername: true,
-      title: 'Log out',
+      buttonLabel: 'sign out',
       fields: [],
       content: '',
       callback: () => {

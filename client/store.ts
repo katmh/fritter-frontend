@@ -27,6 +27,9 @@ const store = new Vuex.Store({
         Vue.delete(state.alerts, payload.message);
       }, 3000);
     },
+    removeAlert(state, message) {
+      Vue.delete(state.alerts, message);
+    },
     setUsername(state, username) {
       /**
        * Update the stored username to the specified one.

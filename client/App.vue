@@ -42,7 +42,6 @@ export default {
   margin: 0;
   padding: 0;
   font-family: Helvetica, sans-serif;
-  color: #232323;
 }
 
 /* Prevent overscrolling :) https://stackoverflow.com/questions/12046315/prevent-overscrolling-of-web-page */
@@ -54,6 +53,7 @@ body {
   height: 100%;
   overflow: auto;
   background: #fcfcfd;
+  color: #232323;
   font-size: 1.1rem;
 }
 
@@ -99,11 +99,15 @@ h2 {
 h3 {
   font-size: 1.35rem;
 }
-a {
+main a {
   color: #c60;
 }
-.error {
+/* For text-style alerts */
+p.error {
   color: #c30;
+}
+p.success {
+  color: #0c3;
 }
 
 .page_content {
