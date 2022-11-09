@@ -10,8 +10,8 @@
     </section>
     <section class="info">
       <div class="author_and_follow">
-        <p class="author">@{{ freet.author }}</p>
-        <span v-if="$store.state.username !== freet.author">
+        <p class="author">@{{ freet.author.username }}</p>
+        <span v-if="$store.state.username !== freet.author.username">
           <button class="action_button" v-if="$store.state.follows.includes(freet.authorId)" @click="unfollowAuthor">
             unfollow
           </button>
@@ -92,10 +92,9 @@
 }
 </style>
 
-
 <script>
 export default {
-  name: 'FreetComponent',
+  name: 'Freet',
   props: {
     freet: {
       type: Object,

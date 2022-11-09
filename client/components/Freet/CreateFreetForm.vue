@@ -32,9 +32,10 @@ export default {
       fields: [{id: 'content', value: ''}],
       refreshFreets: true,
       callback: () => {
-        const message = 'Freet posted';
-        this.$set(this.alerts, message, 'success');
-        setTimeout(() => this.$delete(this.alerts, message), 3000);
+        this.$store.commit('alert', {
+          message: 'fbeet fleeted (freet posted)!',
+          status: 'success'
+        });
       },
       alerts: {}
     };
@@ -109,5 +110,9 @@ textarea:focus {
 
 .error_messages p {
   color: #c30;
+}
+
+form {
+  margin-bottom: 1rem;
 }
 </style>

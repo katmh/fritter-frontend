@@ -5,9 +5,7 @@ import UserCollection from '../user/collection';
 import * as userValidator from '../user/middleware';
 import * as freetValidator from '../freet/middleware';
 import * as util from './util';
-import UserModel from '../user/model';
-import { HydratedDocument } from 'mongoose';
-import type {Freet} from './model';
+import type {FreetResponse} from './util';
 
 const router = express.Router();
 
@@ -30,7 +28,7 @@ const insert = <T,>(arr: T[], item: T, index: number): void => {
 }
 
 type FeedItem = {
-  freet: HydratedDocument<Freet>;
+  freet: FreetResponse[];
   metadata: {
     isFromReadingList: boolean;
   }
@@ -63,7 +61,7 @@ router.get(
     }
 
     const allFreets = await FreetCollection.findAll();
-    const feed: FeedItem[] = allFreets.map((freet) => ({
+    const feed = allFreets.map((freet) => ({
       freet,
       metadata: {isFromReadingList: false}
     }));
@@ -79,7 +77,10 @@ router.get(
       }, getRandomInt(0, feed.length - 1));
     }
 
-    res.status(200).json(feed);
+    res.status(200).json(feed.map((entry) => ({
+      freet: util.constructFreetResponse(entry.freet),
+      metadata: entry.metadata
+    })));
   },
   [
     userValidator.isAuthorExists

@@ -1,15 +1,12 @@
-import type {HydratedDocument} from 'mongoose';
 import moment from 'moment';
+import type {HydratedDocument} from 'mongoose';
 import type {Freet, PopulatedFreet} from '../freet/model';
 
-// Update this if you add a property to the Freet type!
-type FreetResponse = {
+export type FreetResponse = {
   _id: string;
-  author: string;
-  authorId: string;
-  dateCreated: string;
+  author: any;
   content: string;
-  dateModified: string;
+  dateCreated: string;
 };
 
 /**
@@ -18,7 +15,8 @@ type FreetResponse = {
  * @param {Date} date - A date object
  * @returns {string} - formatted date as string
  */
-const formatDate = (date: Date): string => moment(date).format('MMM d, yyyy h:mm a').toLowerCase();
+const formatDate = (date: Date): string =>
+  moment(date).format('MMM d, yyyy h:mm a').toLowerCase();
 
 /**
  * Transform a raw Freet object from the database into an object
@@ -28,21 +26,21 @@ const formatDate = (date: Date): string => moment(date).format('MMM d, yyyy h:mm
  * @returns {FreetResponse} - The freet object formatted for the frontend
  */
 const constructFreetResponse = (freet: HydratedDocument<Freet>): FreetResponse => {
-  const freetCopy: PopulatedFreet = {
-    ...freet.toObject({
-      versionKey: false // Cosmetics; prevents returning of __v property
-    })
-  };
-  const {username} = freetCopy.authorId;
-  const authorId = freetCopy.authorId._id.toString();
-  delete freetCopy.authorId;
+  // Cosmetics; prevents returning of __v property
+  const freetCopy: PopulatedFreet = {...freet.toObject({versionKey: false})};
+
+  console.log({
+    ...freetCopy,
+    _id: freetCopy._id.toString(),
+    author: freetCopy.authorId, // Populated
+    dateCreated: formatDate(freet.dateCreated)
+  });
+
   return {
     ...freetCopy,
     _id: freetCopy._id.toString(),
-    author: username,
-    authorId,
-    dateCreated: formatDate(freet.dateCreated),
-    dateModified: formatDate(freet.dateModified)
+    author: freetCopy.authorId, // Populated
+    dateCreated: formatDate(freet.dateCreated)
   };
 };
 

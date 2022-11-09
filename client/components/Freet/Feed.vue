@@ -1,7 +1,7 @@
 <template>
   <section>
     <section v-if="this.entries">
-      <FreetComponent
+      <Freet
         v-for="entry in entries"
         :key="entry.id"
         :freet="entry.freet"
@@ -15,12 +15,12 @@
 </template>
 
 <script>
-import FreetComponent from '@/components/Freet/FreetComponent.vue';
+import Freet from '@/components/Freet/Freet.vue';
 
 export default {
   name: 'Feed',
   components: {
-    FreetComponent
+    Freet
   },
   props: {
     entries: {

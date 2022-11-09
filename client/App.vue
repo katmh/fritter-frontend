@@ -80,7 +80,6 @@ main {
 
 .page_header {
   margin-top: 2rem;
-  margin-bottom: 1rem;
   display: flex;
   justify-content: space-between;
 }

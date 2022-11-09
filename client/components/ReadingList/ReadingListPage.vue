@@ -12,7 +12,7 @@
       <p v-if="!this.$store.state.readingList.length">
         You have no freets in your reading list. Try adding some!
       </p>
-      <FreetComponent
+      <Freet
         v-for="freet in this.$store.state.readingList"
         :key="freet.id"
         :freet="freet"
@@ -22,15 +22,12 @@
 </template>
 
 <script>
-import FreetComponent from '@/components/Freet/FreetComponent.vue';
+import Freet from '@/components/Freet/Freet.vue';
 
 export default {
   name: 'ReadingListPage',
   components: {
-    FreetComponent
-  },
-  mounted() {
-    console.log(this.$store.state.readingList);
+    Freet
   },
   methods: {
     clearReadingList() {
