@@ -30,9 +30,9 @@
       <button class="action_button" @click="removeFromReadingList" v-else>
         x remove from reading list
       </button>
-      <button class="action_button" @click="addToCm">
+      <!--<button class="action_button" @click="addToCm">
         + add to moment
-      </button>
+      </button>-->
       <div
         v-if="$store.state.username === freet.author"
         class="actions"

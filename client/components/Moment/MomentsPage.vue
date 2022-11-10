@@ -2,11 +2,15 @@
   <main>
     <section class="page_content">
       <header class="page_header">
-        <h2>my moments.</h2>
+        <h2>moments.</h2>
       </header>
+      <h3>create a new moment</h3>
       <CreateCMForm />
     </section>
     <section>
+      <header class="page_content page_header">
+        <h3>my moments</h3>
+      </header>
       <Moment v-for="(moment) in $store.state.myMoments" :moment=moment />
     </section>
   </main>
