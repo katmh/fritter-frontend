@@ -14,13 +14,18 @@ export default {
     marginLeft: {
       type: Number,
       default: 4
+    },
+    marginRight: {
+      type: Number,
+      default: 0
     }
   },
   computed: {
     cssVariables() {
       return {
         '--size': `${this.size}px`,
-        '--marginLeft': `${this.marginLeft}px`
+        '--marginLeft': `${this.marginLeft}px`,
+        '--marginRight': `${this.marginRight}px`,
       }
     }
   }
@@ -33,5 +38,6 @@ img {
   vertical-align: middle;
   width: var(--size);
   margin-left: var(--marginLeft);
+  margin-right: var(--marginRight);
 }
 </style>

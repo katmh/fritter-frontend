@@ -12,9 +12,9 @@ export default {
       method: 'PATCH',
       hasBody: true,
       fields: [
-        {id: 'password', label: 'Password', value: ''}
+        {id: 'password', label: 'password', value: ''}
       ],
-      title: 'Change password',
+      buttonLabel: 'change password',
       callback: () => {
         const message = 'Successfully changed password!';
         this.$set(this.alerts, message, 'success');

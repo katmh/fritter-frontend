@@ -1,13 +1,7 @@
-<!-- Reusable component representing a form in a block style -->
 <template>
   <form @submit.prevent="submit">
-    <article
-      v-if="fields.length"
-    >
-      <div
-        v-for="field in fields"
-        :key="field.id"
-      >
+    <article v-if="fields.length">
+      <div v-for="field in fields" :key="field.id">
         <label :for="`${field.id}-${title}`">{{ field.label }}:</label>
         <textarea
           v-if="field.id === 'content'"
@@ -18,16 +12,13 @@
         />
         <input
           v-else
-          :type="field.id === 'password' ? 'password' : 'text'"
+          type="text"
           :id="`${field.id}-${title}`"
           :name="field.id"
           :value="field.value"
           @input="field.value = $event.target.value"
         >
       </div>
-    </article>
-    <article class="content" v-else>
-      <p>{{ content }}</p>
     </article>
     <footer>
       <button :class="`submit_button ${buttonClasses}`" type="submit">
@@ -39,23 +30,25 @@
 </template>
 
 <script>
-
 export default {
-  name: 'BlockForm',
+  name: 'CreateCMForm',
   data() {
-    /**
-     * Options for submitting this form.
-     */
     return {
-      url: '', // Url to submit form to
-      method: 'GET', // Form request method
-      hasBody: false, // Whether or not form request has a body
-      setUsername: false, // Whether or not stored username should be updated after form submission
-      refreshFreets: false, // Whether or not stored freets should be updated after form submission
-      useGlobalAlerts: false,
-      alerts: {}, // Displays success/error messages encountered during form submission
-      callback: null // Function to run after successful form submission
-    };
+      url: '/api/cm',
+      method: 'POST',
+      hasBody: true,
+      fields: [
+        {id: 'title', label: 'title', value: ''},
+        {id: 'description', label: 'description', value: ''},
+        {id: 'admins', label: 'admins', value: ''},
+        {id: 'editors', label: 'editors', value: ''}
+      ],
+      buttonLabel: 'create',
+      callback: () => {
+        console.log('created a CM');
+        // TODO
+      }
+    }
   },
   methods: {
     async submit() {
@@ -111,7 +104,7 @@ export default {
       }
     }
   }
-};
+}
 </script>
 
 <style scoped>

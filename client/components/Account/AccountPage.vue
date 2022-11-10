@@ -6,10 +6,21 @@
       </header>
       <ChangeUsernameForm />
       <ChangePasswordForm />
+    </section>
+    <hr />
+    <section class="page_content">
+      <h3>delete account</h3>
       <DeleteAccountForm />
     </section>
   </main>
 </template>
+
+<style scoped>
+hr {
+  margin-top: 3rem;
+  margin-bottom: 2.15rem;
+}
+</style>
 
 <script>
 import ChangeUsernameForm from '@/components/Account/ChangeUsernameForm.vue';

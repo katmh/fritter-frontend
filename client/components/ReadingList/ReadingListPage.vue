@@ -3,20 +3,23 @@
     <section class="page_content">
     <header class="page_header">
       <h2>reading list.</h2>
-      <button class="action_button" @click="clearReadingList">
-        Clear
+      <button class="action_button danger" @click="clearReadingList">
+        clear all
       </button>
     </header>
   </section>
-    <section>
-      <p v-if="!this.$store.state.readingList.length">
-        You have no freets in your reading list. Try adding some!
+    <section v-if="!this.$store.state.readingList.length">
+      <p class="null" v-if="!this.$store.state.readingList.length">
+        you have no freets in your reading list. try adding some!
       </p>
+    </section>
+    <section v-else>
       <Freet
         v-for="freet in this.$store.state.readingList"
         :key="freet.id"
         :freet="freet"
       />
+      <p class="null">that’s the end!</p>
     </section>
   </main>
 </template>
@@ -39,7 +42,7 @@ export default {
         method: 'DELETE',
         callback: () => {
           this.$store.commit('alert', {
-            message: 'Reading list cleared',
+            message: 'reading list cleared',
             status: 'success'
           })
         }

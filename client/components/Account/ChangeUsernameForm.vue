@@ -13,9 +13,9 @@ export default {
       hasBody: true,
       setUsername: true,
       fields: [
-        {id: 'username', label: 'Username', value: ''}
+        {id: 'username', label: 'username', value: ''}
       ],
-      title: 'Change username',
+      buttonLabel: 'change username',
       callback: () => {
         const message = 'Successfully changed username!';
         this.$set(this.alerts, message, 'success');

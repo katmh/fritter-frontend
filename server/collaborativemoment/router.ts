@@ -6,8 +6,34 @@ import * as freetValidator from '../freet/middleware';
 import * as util from './util';
 import CMCollection from './collection';
 import * as cmValidator from './middleware';
+import CollaborativeMomentModel from './model';
 
 const router = express.Router();
+
+/**
+ * Get CMs for which the currently logged in user is an admin or editor.
+ * 
+ * @name GET /api/cm
+ * 
+ * @return {CollaborativeMomentResponse[]} - List of CMs for which the currently logged in user is an admin or editor
+ * @throws {403} - If user is not logged in
+ */
+router.get(
+  '/',
+  [
+    userValidator.isUserLoggedIn
+  ],
+  async (_: Request, res: Response) => {
+    const cms = await CollaborativeMomentModel
+      .find({})
+      .populate({path: 'admins', model: 'User'})
+      // .populate('editors')
+      // .populate('entries')
+      .exec();
+    console.log(cms);
+    res.status(200).json(cms);
+  }
+)
 
 // TODO: should I enforce here that the user becomes an admin of the CM?
 /**

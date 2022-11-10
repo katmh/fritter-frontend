@@ -11,12 +11,12 @@
     <section class="info">
       <div class="author_and_follow">
         <p class="author">@{{ freet.author.username }}</p>
-        <span v-if="$store.state.username !== freet.author.username">
+        <!--<span v-if="$store.state.username !== freet.author.username">
           <button class="action_button" v-if="$store.state.follows.includes(freet.authorId)" @click="unfollowAuthor">
             unfollow
           </button>
           <button class="action_button" v-else @click="followAuthor">follow</button>
-        </span>
+        </span>-->
       </div>
       <p class="timestamp">{{ freet.dateCreated }}</p>
     </section>
@@ -62,12 +62,12 @@
   padding: 1.4rem 1.8rem;
   border-top: 1px solid #aaa;
 }
-.freet:last-child {
+.freet:last-of-type {
   border-bottom: 1px solid #aaa;
 }
 .info {
   display: flex;
-  gap: 1rem;
+  gap: 0.8rem;
   font-size: 1.1rem;
   align-items: center;
 }
@@ -89,6 +89,17 @@
 .timestamp {
   margin-left: 0.2rem;
   color: #777;
+}
+
+.actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.source {
+  font-weight: bold;
+  font-style: italic;
+  color: #f93;
 }
 </style>
 

@@ -26,7 +26,8 @@ import RegisterForm from '@/components/Login/RegisterForm.vue';
 const taglines = [
   'it’s free and always will be.',
   'it’s quick and easy.',
-  'the f stands for facebook.'
+  'the f stands for facebook.',
+  'try signing in as alyssa, ben, carly, or dorothy!'
 ];
 
 export default {

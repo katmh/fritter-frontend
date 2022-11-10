@@ -82,6 +82,7 @@ main {
   margin-top: 2rem;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 h1, h2, h3 {
@@ -130,6 +131,10 @@ p.success {
   background: #ff8d1a;
 }
 
+.submit_button.danger {
+  background: #c30;
+}
+
 .action_button {
   padding: 0.3rem 0.8rem;
   background: transparent;
@@ -141,10 +146,46 @@ p.success {
   cursor: pointer;
   border-radius: 2rem;
   font-weight: bold;
+  height: 100%;
 }
 
 .action_button:hover {
   color: #ff8d1a;
+}
+
+.action_button.danger {
+  border-color: #c30;
+}
+
+.action_button.danger:hover {
+  color: #c30;
+}
+
+.text_button {
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0.7rem 1.4rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+  font-size: 1.1rem;
+  font-weight: normal;
+}
+
+.text_button:hover {
+  background: #ddd;
+}
+
+.null {
+  margin: 2rem 0;
+  text-align: center;
+  color: #333;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #aaa;
 }
 
 input[type="text"],

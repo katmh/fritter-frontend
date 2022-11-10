@@ -15,7 +15,9 @@ const store = new Vuex.Store({
     alerts: {}, // global success/error messages encountered during submissions to non-visible forms
 
     follows: [],
-    readingList: []
+    readingList: [],
+    users: [],
+    myMoments: []
   },
   mutations: {
     alert(state, payload) {
@@ -57,6 +59,23 @@ const store = new Vuex.Store({
        * @param follows - Follows to store
        */
       state.follows = follows;
+    },
+    async refreshUsers(state) {
+      /**
+       * Refreshes the `users` field of the store by checking the server.
+       */
+      state.users = await fetch('/api/users').then(async r => r.json());
+    },
+    async refreshMyMoments(state) {
+      /**
+       * Refreshes the `myMoments` field of the store by checking the server
+       * for all moments for which the currently logged in user is an editor or admin.
+       */
+      try {
+        state.myMoments = await fetch('/api/cm').then(async r => r.json());
+      } catch (_) {
+        state.myMoments = [];
+      }
     },
     async refreshFreets(state) {
       /**

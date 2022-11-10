@@ -31,7 +31,17 @@ class CMCollection {
     const {admins: adminUsernames, editors: editorUsernames} = cmDetails;
     const admins = await usernamesToIds(adminUsernames);
     const editors = await usernamesToIds(editorUsernames);
-    const cm = new CollaborativeMomentModel({title, description, admins, editors, entries: []});
+    const cm = new CollaborativeMomentModel({
+      title,
+      description,
+      // admins,
+      // editors,
+      entries: []
+    });
+    cm.update(
+      {},
+      {$addToSet: {admins, editors}}
+    );
     await cm.save();
     return cm;
   }

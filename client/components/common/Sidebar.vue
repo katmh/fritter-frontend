@@ -2,35 +2,44 @@
   <aside>
     <header>
       <router-link to="/" id="logo">
-        <img src="../../public/logo.svg">
+        <Icon src="/logo.svg" size=32 />
         <h1 class="title">fritter.</h1>
       </router-link>
     </header>
-
     <nav v-if="$store.state.username">
-      <router-link to="/">home</router-link>
-      <router-link to="/account">account</router-link>
-      <router-link to="/readinglist">reading list</router-link>
-      <router-link to="/moments">moments</router-link>
+      <router-link to="/">
+        <Icon src="/icons/home.svg" size=20 marginRight=8 />
+        <span>home</span>
+      </router-link>
+      <router-link to="/account">
+        <Icon src="/icons/settings.svg" size=20 marginRight=8 />
+        <span>account</span>
+      </router-link>
+      <router-link to="/readinglist">
+        <Icon src="/icons/bookmark.svg" size=20 marginRight=8 />
+        <span>reading list</span>
+      </router-link>
+      <router-link to="/moments">
+        <Icon src="/icons/list.svg" size=20 marginRight=8 />
+        <span>moments</span>
+      </router-link>
     </nav>
-
     <footer class="self" v-if="$store.state.username">
-      <p>@{{ $store.state.username }}</p>
-      <LogoutForm />
+      <p>signed in as <b>@{{ $store.state.username }}</b></p>
+      <Menu>
+        <LogoutButton />
+      </Menu>
     </footer>
   </aside>
 </template>
 
 <script>
 import Icon from '@/components/common/Icon.vue';
-import LogoutForm from '@/components/Account/LogoutForm.vue';
-
+import Menu from '@/components/common/Menu.vue';
+import LogoutButton from '@/components/Account/LogoutButton.vue';
 export default {
   name: 'Sidebar',
-  components: {
-    Icon,
-    LogoutForm
-  }
+  components: {Icon, Menu, LogoutButton}
 };
 </script>
 
@@ -51,8 +60,10 @@ aside {
   text-decoration: none;
 }
 
-#logo img {
-  display: block;
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 nav {
@@ -61,19 +72,23 @@ nav {
 }
 
 nav a {
-  display: block;
-  padding: 0.75rem 0;
-  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
   text-decoration: none;
+  padding: 0.75rem 0;
+  color: #222;
+}
+
+nav a span {
+  font-size: 1.25rem;
   font-weight: bold;
-  color: #bab3ad;
-  transition: 0.2s;
+  display: block;
+  transition: 0.1s;
 }
 
 nav a:hover {
   color: #cd6700;
 }
-
 .title {
   font-size: 32px;
   margin: 0 5px;

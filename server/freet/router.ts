@@ -68,6 +68,7 @@ router.get(
 
     const userId = req.session.userId as string;
     const readingListFreets = userId ? await UserCollection.getReadingList(userId) : [];
+    // Remove freets which are already in
     // Insert up to 3 reading list into feed in random spots
     const NUM_READING_LIST_INSERTS = Math.min(3, readingListFreets.length);
     for (let i = 0; i < NUM_READING_LIST_INSERTS; i++) {

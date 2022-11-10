@@ -7,18 +7,24 @@
       <CreateCMForm />
     </section>
     <section>
-      Hello
+      <Moment v-for="(moment) in $store.state.myMoments" :moment=moment />
     </section>
   </main>
 </template>
 
 <script>
-import CreateCMForm from '@/components/CM/CreateCMForm.vue';
+import CreateCMForm from '@/components/Moment/CreateCMForm.vue';
+import Moment from '@/components/Moment/Moment.vue';
 
 export default {
   name: 'MomentsPage',
   components: {
-    CreateCMForm
+    CreateCMForm,
+    Moment
+  },
+  mounted() {
+    this.$store.commit('refreshUsers'); // Need list of users to search for admins/editors
+    this.$store.commit('refreshMyMoments');
   }
 }
 </script>

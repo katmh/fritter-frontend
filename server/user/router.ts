@@ -4,6 +4,7 @@ import FreetCollection from '../freet/collection';
 import UserCollection from './collection';
 import * as userValidator from '../user/middleware';
 import * as util from './util';
+import UserModel from './model';
 
 const router = express.Router();
 
@@ -83,6 +84,22 @@ router.delete(
     });
   }
 );
+
+/**
+ * Get all users.
+ * 
+ * @name GET /api/users
+ * 
+ * @returns {UserResponse[]} - List of all users on Fritter
+ */
+router.get(
+  '/',
+  [],
+  async (_: Request, res: Response) => {
+    const users = await UserModel.find({});
+    res.status(200).json(users);
+  }
+)
 
 /**
  * Create a user account.
